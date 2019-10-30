@@ -11,7 +11,7 @@ interface MyWindow extends Window {
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['authenticated', 'onlineMode'],
+  whitelist: ['authenticated', 'firstLoad', 'onlineMode'],
 };
 const persistedReducer = persistReducer(persistConfig, reducer);
 
