@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { setAuthenticated } from '../../../store/ducks/authenticated';
 import styles from './styles';
 
-const AppAuthenticated: FC = () => {
+const AppHome: FC = () => {
   const dispatch = useDispatch();
   const handlePress = (): void => {
     dispatch(setAuthenticated(false));
@@ -17,4 +17,4 @@ const AppAuthenticated: FC = () => {
   );
 };
 
-export default AppAuthenticated;
+export default AppHome;

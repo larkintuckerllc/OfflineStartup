@@ -5,8 +5,11 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import store, { persistor } from '../../store';
 import { getAuthenticated } from '../../store/ducks/authenticated';
+import { getFirstLoad } from '../../store/ducks/firstLoad';
 import { setOnline } from '../../store/ducks/online';
-import AppAuthenticated from './AppAuthenticated';
+import { getOnlineMode } from '../../store/ducks/onlineMode';
+import AppHome from './AppHome';
+import AppLoading from './AppLoading';
 import AppGoOnline from './AppGoOnline';
 import AppLogin from './AppLogin';
 import AppOnline from './AppOnline';
@@ -14,8 +17,9 @@ import AppOnline from './AppOnline';
 const AppUsingRedux: FC = () => {
   const dispatch = useDispatch();
   const authenticated = useSelector(getAuthenticated);
+  const firstLoad = useSelector(getFirstLoad);
+  const onlineMode = useSelector(getOnlineMode);
   const [onlineChecked, setOnlineChecked] = useState(false);
-  // ONLINE
   useEffect(() => {
     const execute = async (): Promise<void> => {
       try {
@@ -40,8 +44,11 @@ const AppUsingRedux: FC = () => {
     <>
       <AppGoOnline />
       <AppOnline />
-      {authenticated && <AppAuthenticated />}
-      {!authenticated && <AppLogin />}
+      {onlineMode && authenticated && <AppLoading />}
+      {onlineMode && !authenticated && <AppLogin />}
+      {!onlineMode && authenticated && firstLoad && <Text>Wait to Load</Text>}
+      {!onlineMode && authenticated && !firstLoad && <AppHome />}
+      {!onlineMode && !authenticated && <Text>Wait to Login</Text>}
     </>
   );
 };
