@@ -1,8 +1,9 @@
 import NetInfo from '@react-native-community/netinfo';
 import React, { FC, useEffect, useState } from 'react';
 import { Text } from 'react-native';
+import { PersistGate } from 'redux-persist/integration/react';
 import { Provider, useDispatch } from 'react-redux';
-import store from '../../store';
+import store, { persistor } from '../../store';
 import { setOnline } from '../../store/ducks/online';
 import AppGoOnline from './AppGoOnline';
 import AppOnline from './AppOnline';
@@ -42,7 +43,9 @@ const AppUsingRedux: FC = () => {
 const App: FC = () => {
   return (
     <Provider store={store}>
-      <AppUsingRedux />
+      <PersistGate loading={<Text>Loading Redux Persistence</Text>} persistor={persistor}>
+        <AppUsingRedux />
+      </PersistGate>
     </Provider>
   );
 };

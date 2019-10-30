@@ -1,6 +1,6 @@
-// import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 import { createStore } from 'redux';
-// import { persistReducer, persistStore } from 'redux-persist';
+import { persistReducer, persistStore } from 'redux-persist';
 import reducer from './ducks';
 
 interface MyWindow extends Window {
@@ -8,17 +8,15 @@ interface MyWindow extends Window {
   __REDUX_DEVTOOLS_EXTENSION__?: any;
 }
 
-/*
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   whitelist: ['offlineMode'],
 };
 const persistedReducer = persistReducer(persistConfig, reducer);
-*/
 
 const store = createStore(
-  reducer,
+  persistedReducer,
   // eslint-disable-next-line
   (window as MyWindow).__REDUX_DEVTOOLS_EXTENSION__ &&
     // eslint-disable-next-line
@@ -27,4 +25,4 @@ const store = createStore(
 
 export default store;
 
-// export const persistor = persistStore(store);
+export const persistor = persistStore(store);
