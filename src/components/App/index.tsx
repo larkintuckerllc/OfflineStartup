@@ -2,14 +2,18 @@ import NetInfo from '@react-native-community/netinfo';
 import React, { FC, useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import store, { persistor } from '../../store';
+import { getAuthenticated } from '../../store/ducks/authenticated';
 import { setOnline } from '../../store/ducks/online';
+import AppAuthenticated from './AppAuthenticated';
 import AppGoOnline from './AppGoOnline';
+import AppLogin from './AppLogin';
 import AppOnline from './AppOnline';
 
 const AppUsingRedux: FC = () => {
   const dispatch = useDispatch();
+  const authenticated = useSelector(getAuthenticated);
   const [onlineChecked, setOnlineChecked] = useState(false);
   // ONLINE
   useEffect(() => {
@@ -36,6 +40,8 @@ const AppUsingRedux: FC = () => {
     <>
       <AppGoOnline />
       <AppOnline />
+      {authenticated && <AppAuthenticated />}
+      {!authenticated && <AppLogin />}
     </>
   );
 };
