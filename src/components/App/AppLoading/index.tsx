@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFirstLoad, setFirstLoad } from '../../../store/ducks/firstLoad';
+import { setOnlineMode } from '../../../store/ducks/onlineMode';
 import AppHome from '../AppHome';
 
 const delay = (): Promise<void> =>
@@ -17,12 +18,17 @@ const AppLoading: FC = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const execute = async (): Promise<void> => {
-      await delay();
-      dispatch(setFirstLoad(false));
-      setLoading(false);
+      try {
+        await delay();
+        // throw new Error(); // ERROR CASE
+        dispatch(setFirstLoad(false)); // SUCCESS CASE
+        setLoading(false); // SUCCESS CASE
+      } catch (e) {
+        dispatch(setOnlineMode(false));
+      }
     };
     execute();
-  }, [setLoading]);
+  }, [dispatch, setLoading, setOnlineMode]);
 
   if (loading) {
     return (
